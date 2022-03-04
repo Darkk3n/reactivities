@@ -1,7 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -10,8 +7,12 @@ namespace API.Controllers
    [Route("[controller]")]
    public class BaseApiController : ControllerBase
    {
+      private readonly IMediator mediator;
+      protected IMediator Mediator => mediator ?? HttpContext.RequestServices.GetService<IMediator>();
+
       public BaseApiController()
       {
+
       }
    }
 }
