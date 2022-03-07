@@ -1,16 +1,12 @@
+import { observer } from "mobx-react-lite";
 import React, { SyntheticEvent, useState } from "react";
 import { Button, Item, Label, Segment } from "semantic-ui-react";
-import { Activity } from "../../../app/Models/activity";
-
-interface Props {
-   activities: Activity[],
-   selectActivity: (id: string) => void,
-   deleteActivity: (id: string) => void,
-   submitting: boolean
-}
+import { useStore } from "../../../app/stores/store";
 
 
-const ActivityList = ({ activities, selectActivity, deleteActivity, submitting }: Props) => {
+const ActivityList = () => {
+   const { activityStore } = useStore();
+   const { deleteActivity, activitiesByDate, loading } = activityStore;
    const [target, setTarget] = useState('');
 
    const handleActivityDelete = (e: SyntheticEvent<HTMLButtonElement>, id: string) => {
@@ -22,7 +18,7 @@ const ActivityList = ({ activities, selectActivity, deleteActivity, submitting }
       <Segment>
          <Item.Group divided>
             {
-               activities.map(a => {
+               activitiesByDate.map(a => {
                   return (
                      <Item key={a.id}>
                         <Item.Content>
@@ -33,9 +29,9 @@ const ActivityList = ({ activities, selectActivity, deleteActivity, submitting }
                               <div>{a.city}, {a.venue}</div>
                            </Item.Description>
                            <Item.Extra>
-                              <Button onClick={() => selectActivity(a.id)} floated='right' content='View' color='blue' />
+                              <Button onClick={() => activityStore.selectActivity(a.id)} floated='right' content='View' color='blue' />
                               <Button
-                                 loading={submitting && target === a.id}
+                                 loading={loading && target === a.id}
                                  onClick={(e) => handleActivityDelete(e, a.id)}
                                  floated='right'
                                  content='Delete'
@@ -52,4 +48,4 @@ const ActivityList = ({ activities, selectActivity, deleteActivity, submitting }
       </Segment>
    </>
 }
-export default ActivityList;
+export default observer(ActivityList);
