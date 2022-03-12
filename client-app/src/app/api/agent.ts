@@ -4,11 +4,11 @@ import { store } from "../stores/store";
 import { history } from './../../index';
 import { Activity } from './../Models/activity';
 
-const sleep = (delay: number) =>
-   new Promise(resolve => {
-      setTimeout(() => resolve, delay);
+const sleep = (delay: number) => {
+   return new Promise((resolve) => {
+      setTimeout(resolve, delay)
    })
-
+}
 axios.defaults.baseURL = 'http://localhost:5000/api';
 
 axios.interceptors.response.use(async res => {
